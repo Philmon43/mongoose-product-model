@@ -1,25 +1,29 @@
-require("../db/mongoose");
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
+const validator = require("validator")
 
 const productDetailSchema = mongoose.Schema({
     description: {
         type: String,
-        // required: true,
+        required: true,
     },
     price: {
         type: Number,
-        // required: true,
+        required: true,
     },
     discount: {
         type: Number,
-        // required: true,
+        required: true,
     },
     images: [{
-        // type: String,
+        type: String,
     }],
     phoneNumber: {
-        type: Number,
-        // required: true,
+        type: String,
+        validate(val) {
+            if (!validator.isMobilePhone(val)) {
+                throw "error mobile phone"
+            }
+        }
     },
     date: {
         type: Date,
@@ -41,7 +45,7 @@ const productSchema = mongoose.Schema({
         type: Boolean,
         default: true
     },
-    detail: productDetailSchema,
+    details: productDetailSchema,
 })
 const Product = mongoose.model("Product", productSchema)
 module.exports = Product
